@@ -6,6 +6,9 @@ import arc.util.CommandHandler;
 import arc.util.CommandHandler.*;
 import arc.util.Log;
 import arc.util.Strings;
+import static arc.util.ColorCodes.*;
+import static arc.util.Log.format;
+import static arc.util.Log.formatColors;
 
 import mindustry.mod.*;
 import mindustry.net.Administration;
@@ -17,23 +20,23 @@ import org.jline.terminal.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static arc.util.ColorCodes.*;
-import static arc.util.Log.format;
-import static arc.util.Log.formatColors;
-
 public class Main extends Plugin{
     private ServerControl serverControl;
+    private CommandHandler handler;
     private String suggested;
+    private Fi currentLogFile;
     private Terminal terminal;
+    private LineReader lineReader;
+
     protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
-    protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"),
-            autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
+    protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
     public final Fi logFolder = Core.settings.getDataDirectory().child("logs/");
     private static final int maxLogLength = 1024 * 1024 * 5;
-    private Fi currentLogFile;
-    private LineReader lineReader;
     @Override
     public void init() {
+        serverControl = (ServerControl) Core.app.getListeners().find(listener -> listener instanceof ServerControl);
+        handler = serverControl.handler;
+
         try {
             terminal = TerminalBuilder.builder().system(true).build();
             lineReader = LineReaderBuilder
@@ -45,7 +48,7 @@ public class Main extends Plugin{
             Log.err("Console not loaded. Stopping...");
             Core.app.exit();
         }
-        serverControl = (ServerControl) Core.app.getListeners().find(listener -> listener instanceof ServerControl);
+
         Log.logger = (level1, text) -> {
             //err has red text instead of reset.
             if(level1 == Log.LogLevel.err) text = text.replace(reset, lightRed + bold);
