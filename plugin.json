@@ -1,7 +1,7 @@
 {
-  "name": "ExamplePlugin",
-  "author": "Anuke",
-  "main": "example.ExamplePlugin",
-  "description": "A plugin to demonstrate some basic features.",
+  "name": "BetterConsole",
+  "author": "OSPx",
+  "main": "osp.Main",
+  "description": "The mindustry plugin that improves the input of console commands.",
   "version": 1.0
 }
