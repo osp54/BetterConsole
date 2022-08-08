@@ -16,14 +16,15 @@ import mindustry.server.ServerControl;
 
 import org.jline.reader.*;
 import org.jline.terminal.*;
+import org.jline.reader.impl.completer.StringsCompleter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Main extends Plugin{
     private ServerControl serverControl;
     private CommandHandler handler;
-    private String suggested;
     private Fi currentLogFile;
     private Terminal terminal;
     private LineReader lineReader;
@@ -37,15 +38,20 @@ public class Main extends Plugin{
         serverControl = (ServerControl) Core.app.getListeners().find(listener -> listener instanceof ServerControl);
         handler = serverControl.handler;
 
+        List<String> cmds = new ArrayList();
+        handler.getCommandList().forEach(cmd -> {
+            cmds.add(cmd.text);
+        });
+
         try {
-            terminal = TerminalBuilder.builder().system(true).build();
+            terminal = TerminalBuilder.builder().jna(true).system(true).build();
             lineReader = LineReaderBuilder
                     .builder()
+                    .completer(new StringsCompleter(cmds))
                     .terminal(terminal)
                     .build();
         } catch (Exception e){
-            e.printStackTrace();
-            Log.err("Console not loaded. Stopping...");
+            Log.err(e);
             Core.app.exit();
         }
 
@@ -112,17 +118,13 @@ public class Main extends Plugin{
 
             if(closest != null && !closest.text.equals("yes")){
                 Log.err("Command not found. Did you mean \"" + closest.text + "\"?");
-                suggested = line.replace(response.runCommand, closest.text);
             }else{
                 Log.err("Invalid command. Type 'help' for help.");
             }
         }else if(response.type == ResponseType.fewArguments){
             Log.err("Too few command arguments. Usage: " + response.command.text + " " + response.command.paramText);
         }else if(response.type == ResponseType.manyArguments){
-            Log.err("Too many command arguments. Usage: " + response.command.text + " " + response.command.paramText);
-        }else if(response.type == ResponseType.valid){
-            suggested = null;
-        }
+            Log.err("Too many command arguments. Usage: " + response.command.text + " " + response.command.paramText);}
     }
     private void logToFile(String text){
         if(currentLogFile != null && currentLogFile.length() > maxLogLength){
