@@ -28,21 +28,23 @@ public class Main extends Plugin{
     private Fi currentLogFile;
     private Terminal terminal;
     private LineReader lineReader;
-
+    // анюковские переменные которые приватны в serverControl
     protected static String[] tags = {"&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", ""};
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
     public final Fi logFolder = Core.settings.getDataDirectory().child("logs/");
     private static final int maxLogLength = 1024 * 1024 * 5;
     @Override
     public void init() {
+        // получаем серверКонтрол и хандлер комманд(если создать новый ничего не получится)
         serverControl = (ServerControl) Core.app.getListeners().find(listener -> listener instanceof ServerControl);
         handler = serverControl.handler;
 
+        // помещаем все имена команд в список для автодополнения команды через tab(работает костыльно, нужно доработать)
         List<String> cmds = new ArrayList();
         handler.getCommandList().forEach(cmd -> {
             cmds.add(cmd.text);
         });
-
+        // создание терминала
         try {
             terminal = TerminalBuilder.builder().jna(true).system(true).build();
             lineReader = LineReaderBuilder
@@ -54,7 +56,7 @@ public class Main extends Plugin{
             Log.err(e);
             Core.app.exit();
         }
-
+        // Это нужно для того чтобы логи не мешали вводу
         Log.logger = (level1, text) -> {
             //err has red text instead of reset.
             if(level1 == Log.LogLevel.err) text = text.replace(reset, lightRed + bold);
@@ -73,15 +75,8 @@ public class Main extends Plugin{
             if(Administration.Config.logging.bool()){
                 logToFile("[" + dateTime.format(LocalDateTime.now()) + "] " + formatColors(tags[level1.ordinal()] + " " + text + "&fr", false));
             }
-
-//            if(socketOutput != null){
-//                try{
-//                    socketOutput.println(formatColors(text + "&fr", false));
-//                }catch(Throwable e1){
-//                    err("Error occurred logging to socket: @", e1.getClass().getSimpleName());
-//                }
-//            }
         };
+
         serverControl.serverInput = () -> {
             while(true){
                 try {
@@ -101,6 +96,7 @@ public class Main extends Plugin{
         };
 
     }
+    // анюковские методы которые нельзя получить из ServerControl т.к они приватны
     public void handleCommandString(String line){
         CommandHandler handler = serverControl.handler;
         CommandResponse response = handler.handleMessage(line);
