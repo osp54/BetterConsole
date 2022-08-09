@@ -64,6 +64,7 @@ public class Main extends Plugin{
             Log.err(e);
             Core.app.exit();
         }
+
         // Это нужно для того чтобы логи не мешали вводу
         Log.logger = (level1, text) -> {
             //err has red text instead of reset.
@@ -94,15 +95,18 @@ public class Main extends Plugin{
             while(true){
                 try {
                     String line = lineReader.readLine("> ");
-                    if(!line.isEmpty()){
+                    if (!line.isEmpty()) {
                         Core.app.post(() -> serverControl.handleCommandString(line));
                     }
-                }catch (Exception e){
+                } catch (UserInterruptException e) {
+                    Core.app.exit();
+                } catch (EndOfFileException e) {
+                    Core.app.exit();
+                } catch (Exception e) {
                     Log.err(e);
                     Core.app.exit();
                 }
             }
         };
-
     }
 }
