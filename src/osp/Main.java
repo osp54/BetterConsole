@@ -23,8 +23,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main extends Plugin{
-    private ServerControl serverControl;
-    private CommandHandler handler;
+    public ServerControl serverControl;
+    public CommandHandler handler;
+    public static List<String> commandList = new ArrayList<>();
     private Method logToFile;
     private Terminal terminal;
     private LineReader lineReader;
@@ -48,16 +49,16 @@ public class Main extends Plugin{
         }
 
         // помещаем все имена команд в список для автодополнения команды через tab(работает костыльно, нужно доработать)
-        List<String> cmds = new ArrayList();
-        handler.getCommandList().forEach(cmd -> {
-            cmds.add(cmd.text);
+        handler.getCommandList().forEach(command -> {
+            commandList.add(command.text);
         });
         // создание терминала
         try {
             terminal = TerminalBuilder.builder().jna(true).system(true).build();
             lineReader = LineReaderBuilder
                     .builder()
-                    .completer(new StringsCompleter(cmds))
+                    .completer(new StringsCompleter(commandList))
+                    .highlighter(new CommandHighlighter())
                     .terminal(terminal)
                     .build();
         } catch (Exception e){
@@ -69,9 +70,8 @@ public class Main extends Plugin{
         Log.logger = (level1, text) -> {
             //err has red text instead of reset.
             if(level1 == Log.LogLevel.err) text = text.replace(reset, lightRed + bold);
+            String result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 
-            String result = null;
-            result = bold + lightBlack + "[" + dateTime.format(LocalDateTime.now()) + "] " + reset + format(tags[level1.ordinal()] + " " + text + "&fr");
 
             if(lineReader.isReading()){
                 lineReader.callWidget(LineReader.CLEAR);
