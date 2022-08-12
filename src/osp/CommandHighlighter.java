@@ -7,7 +7,6 @@ import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 
 import java.util.regex.Pattern;
-import static osp.Main.commandList;
 
 public class CommandHighlighter implements Highlighter {
     private String command;
@@ -21,7 +20,7 @@ public class CommandHighlighter implements Highlighter {
         } catch (Exception e) {
             command = buffer;
         }
-        if (commandList.contains(command)) {
+        if (Main.commandList.contains(command)) {
             asb.style(new AttributedStyle().foreground(AttributedStyle.GREEN));
             asb.append(buffer);
         //} else if (idx > 0) {

@@ -26,6 +26,7 @@ dependencies{
 
     implementation 'org.jline:jline-reader:3.21.0'
     implementation 'org.jline:jline-terminal-jna:3.21.0'
+    implementation 'org.jline:jline-console:3.21.0'
 }
 
 jar{

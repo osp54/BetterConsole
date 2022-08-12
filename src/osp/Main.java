@@ -4,6 +4,7 @@ import arc.Core;
 import arc.util.CommandHandler;
 import arc.util.Log;
 import arc.util.Reflect;
+
 import static arc.util.ColorCodes.*;
 import static arc.util.Log.format;
 import static arc.util.Log.formatColors;
@@ -15,6 +16,7 @@ import mindustry.server.ServerControl;
 import org.jline.reader.*;
 import org.jline.terminal.*;
 import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.widget.TailTipWidgets;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,7 +26,7 @@ import java.util.*;
 
 public class Main extends Plugin{
     public ServerControl serverControl;
-    public CommandHandler handler;
+    public static CommandHandler handler;
     public static List<String> commandList = new ArrayList<>();
     private Method logToFile;
     private Terminal terminal;
@@ -61,6 +63,7 @@ public class Main extends Plugin{
                     .highlighter(new CommandHighlighter())
                     .terminal(terminal)
                     .build();
+            new TailTipWidgets(lineReader, AutoSuggestions.get(), 0, TailTipWidgets.TipType.TAIL_TIP).enable();
         } catch (Exception e){
             Log.err(e);
             Core.app.exit();
@@ -90,7 +93,6 @@ public class Main extends Plugin{
                 }
             }
         };
-
         serverControl.serverInput = () -> {
             while(true){
                 try {
