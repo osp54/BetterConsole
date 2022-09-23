@@ -19,7 +19,8 @@ logs/
 /tools/build/
 /tests/build/
 /server/build/
-/test_files/
+/test_files
+/test-server/
 /annotations/build/
 /desktop-sdl/build/
 desktop-sdl/build/

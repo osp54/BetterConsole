@@ -6,7 +6,7 @@ Edit the name of the project itself by going into `settings.gradle`.
 
 ### Basic Usage
 
-See `src/example/ExamplePlugin.java` for some basic commands and event handlers.  
+See `src/osp/ExamplePlugin.java` for some basic commands and event handlers.  
 Every main plugin class must extend `Plugin`. Make sure that `plugin.json` points to the correct main plugin class.
 
 Please note that the plugin system is in beta, and as such is subject to changes.
