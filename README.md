@@ -1,24 +1,25 @@
-### Setup
+<div align="center">
+  <h1>Better Console</h1>
+  <p>The mindustry plugin that improves the input of console commands.</p>
+</div>
 
-Clone this repository first.
-To edit the plugin display name and other data, take a look at `plugin.json`.
-Edit the name of the project itself by going into `settings.gradle`.
+## Overview
+### Better Console:
 
-### Basic Usage
+https://user-images.githubusercontent.com/76648940/194759447-7e156961-7c46-48af-90a3-454b3eee3d67.mp4
 
-See `src/osp/ExamplePlugin.java` for some basic commands and event handlers.  
-Every main plugin class must extend `Plugin`. Make sure that `plugin.json` points to the correct main plugin class.
+## Default:
 
-Please note that the plugin system is in beta, and as such is subject to changes.
+https://user-images.githubusercontent.com/76648940/194759932-3cbb475a-ccdb-4d9f-9f83-4fc1f2b715a4.mp4
 
-### Building a Jar
+## Building a Jar
 
 `gradlew jar` / `./gradlew jar`
 
 Output jar should be in `build/libs`.
 
 
-### Installing
+## Installing
 
 Simply place the output jar from the step above in your server's `config/mods` directory and restart the server.
 List your currently installed plugins/mods by running the `mods` command.
