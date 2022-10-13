@@ -22,7 +22,7 @@ ext{
 
 dependencies{
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-    compileOnly ("com.github.Anuken.Mindustry:core:$mindustryVersion") { exclude module: "flabel" }
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:server:$mindustryVersion"
 
     implementation 'org.jline:jline-reader:3.21.0'
