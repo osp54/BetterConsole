@@ -1,3 +1,6 @@
+[![Github All Releases](https://img.shields.io/github/downloads/osp54/BetterConsole/BetterConsole.jar)]()
+[![Github All Releases](https://img.shields.io/github/downloads/osp54/BetterConsole/BetterConsole-Windows.jar)]()
+
 <div align="center">
   <h1>Better Console</h1>
   <p>The mindustry plugin that improves the input of console commands.</p>
